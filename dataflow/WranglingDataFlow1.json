@@ -1,0 +1,20 @@
+{
+	"name": "WranglingDataFlow1",
+	"properties": {
+		"type": "WranglingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "1million_ds",
+					"script": "",
+					"dataset": {
+						"referenceName": "1million_ds",
+						"type": "DatasetReference"
+					}
+				}
+			],
+			"sinks": [],
+			"script": "section Section1;\r\nshared #\"1million_ds\" = let\r\n  AdfDoc = AzureStorage.DataLakeContents(\"https://dfstoragetr.dfs.core.windows.net/incoming/1000000 Sales Records.csv\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true])\r\nin\r\n  PromotedHeaders;\r\nshared UserQuery = let\r\n  Source = #\"1million_ds\",\r\n  #\"Choose columns\" = Table.SelectColumns(Source, {\"Region\", \"Country\", \"Item Type\", \"Sales Channel\", \"Order Date\", \"Order ID\", \"Ship Date\", \"Units Sold\", \"Unit Price\", \"Unit Cost\", \"Total Revenue\", \"Total Cost\", \"Total Profit\"}),\r\n  #\"Replaced value\" = Table.ReplaceValue(#\"Choose columns\", \"Beverages\", \"Drinks\", Replacer.ReplaceText, {\"Item Type\"}),\r\n  #\"Reordered columns\" = Table.ReorderColumns(#\"Replaced value\", {\"Region\", \"Country\", \"Sales Channel\", \"Item Type\", \"Order Date\", \"Order ID\", \"Ship Date\", \"Units Sold\", \"Unit Price\", \"Unit Cost\", \"Total Revenue\", \"Total Cost\", \"Total Profit\"}),\r\n  #\"Marked key columns\" = Table.AddKey(#\"Reordered columns\", {\"Order ID\"}, false),\r\n  #\"Parsed date\" = Table.TransformColumns(#\"Marked key columns\", {{\"Ship Date\", each Date.From(DateTimeZone.From(_)), type date}}),\r\n  #\"Parsed date 1\" = Table.TransformColumns(#\"Parsed date\", {{\"Order Date\", each Date.From(DateTimeZone.From(_)), type date}}),\r\n  #\"Sorted rows\" = Table.Sort(#\"Parsed date 1\", {{\"Order Date\", Order.Descending}})\r\nin\r\n  #\"Sorted rows\";\r\n"
+		}
+	}
+}

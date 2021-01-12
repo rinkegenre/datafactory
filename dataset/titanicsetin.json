@@ -1,0 +1,73 @@
+{
+	"name": "titanicsetin",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "titanicin",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "titanic.csv",
+				"fileSystem": "incoming"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "PassengerId",
+				"type": "String"
+			},
+			{
+				"name": "Survived",
+				"type": "String"
+			},
+			{
+				"name": "Pclass",
+				"type": "String"
+			},
+			{
+				"name": "Name",
+				"type": "String"
+			},
+			{
+				"name": "Sex",
+				"type": "String"
+			},
+			{
+				"name": "Age",
+				"type": "String"
+			},
+			{
+				"name": "SibSp",
+				"type": "String"
+			},
+			{
+				"name": "Parch",
+				"type": "String"
+			},
+			{
+				"name": "Ticket",
+				"type": "String"
+			},
+			{
+				"name": "Fare",
+				"type": "String"
+			},
+			{
+				"name": "Cabin",
+				"type": "String"
+			},
+			{
+				"name": "Embarked",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
