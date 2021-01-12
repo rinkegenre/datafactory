@@ -1,6 +1,7 @@
 {
-	"name": "WranglingDataFlow1",
+	"name": "WranglingDataFlowsales",
 	"properties": {
+		"description": "xxx",
 		"type": "WranglingDataFlow",
 		"typeProperties": {
 			"sources": [
